@@ -9,4 +9,8 @@ A basic geometry library, so far covering only 2d homogeneous points,
 vectors, and matrices.  Largely a (re-)learning project for TDD and
 gtest, but probably the most likely project to become truly useful.
 
+## sandbox
 
+A place for simple(-ish) programming problems, experiments with new
+languages, APIs, and techniques, and anything that doesn't fit into an
+actual project.
