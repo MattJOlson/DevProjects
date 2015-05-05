@@ -1,0 +1,29 @@
+env = Environment(CPPPATH=['/home/matt/include', 'include'])
+ccflags = ['-Wall', '--std=c++11', '-pedantic']
+testlibs = ['gtest_main', 'gtest', 'pthread']
+libpath = ['/home/matt/lib']
+
+def UnitTest(env, prefix, objects):
+    cur_test = env.Object(prefix + '.cc', CCFLAGS=ccflags)
+    cur_test_exe = env.Program(prefix,
+                               cur_test + objects,
+                               LIBS=testlibs,
+                               LIBPATH=libpath)
+    run_cur_test = env.Command('dummy' + prefix,
+                               cur_test_exe,
+                               cur_test_exe[0].abspath)
+    Depends(run_cur_test, cur_test_exe)
+    return cur_test
+
+
+# tuple types
+tup = env.Object('tup3.cc', CCFLAGS=ccflags)
+pt  = env.Object('pt2.cc',  CCFLAGS=ccflags)
+vec = env.Object('vec2.cc', CCFLAGS=ccflags)
+mat = env.Object('mat2.cc', CCFLAGS=ccflags)
+
+tuple_objs = [tup + pt + vec + mat]
+
+# tests for tuple types
+tup_test = UnitTest(env, 'tuple-tests', tuple_objs)
+mat_test = UnitTest(env, 'matrix-tests', tuple_objs)
