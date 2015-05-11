@@ -94,7 +94,7 @@ class Author {
 
     int count() const { return count_; }
 
-    void visit() const { count_++; }
+    void visit() { ++count_; }
   private:
     std::string name_;
     std::vector< std::weak_ptr<Author> > edges_;
