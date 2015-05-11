@@ -34,6 +34,9 @@ ParseStep ParseStep::parse() const
     // and bound on that.  For this problem, though, the solution here
     // is nice and clean.
 
+    return parser_(data_);
+
+/*
     switch(state_) {
         case LineState::LastName:
             return parseLastName(data_.split(", "));
@@ -50,31 +53,33 @@ ParseStep ParseStep::parse() const
             std::cerr << std::endl;
             exit(1);
     }
+    */
 }
 
-ParseStep parseLastName(SplitString next_data)
+ParseStep parseLastName(SplitString data)
 {
-    return ParseStep(next_data, LineState::Initials);
+    return ParseStep(data.split(", "), parseInitials);
 }
-ParseStep parseInitials(SplitString next_data)
+ParseStep parseInitials(SplitString data)
 {
-    if(next_data.rest.front() == '&') { // last author
-        next_data.rest.erase(0,2);
-        return ParseStep(next_data, LineState::FinalName);
+    data = data.split(", ");
+    if(data.rest.front() == '&') { // last author
+        data.rest.erase(0,2);
+        return ParseStep(data, parseFinalName);
     } // else
-    return ParseStep(next_data, LineState::LastName);
+    return ParseStep(data, parseLastName);
 }
-ParseStep parseFinalName(SplitString next_data)
+ParseStep parseFinalName(SplitString data)
 {
-    return ParseStep(next_data, LineState::FinalInitials);
+    return ParseStep(data.split(", "), parseFinalInitials);
 }
-ParseStep parseFinalInitials(SplitString next_data)
+ParseStep parseFinalInitials(SplitString data)
 {
-    return ParseStep(next_data, LineState::Suffix);
+    return ParseStep(data.split(" "), parseSuffix); // no more commas
 }
-ParseStep parseSuffix(SplitString next_data)
+ParseStep parseSuffix(SplitString data)
 {
-    return ParseStep(next_data, LineState::Suffix);
+    return ParseStep(data, parseSuffix); // suffix is idempotent
 }
 
 bool Author::links(std::weak_ptr<Author> other) const

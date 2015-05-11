@@ -44,7 +44,6 @@ std::string kTestLine {"Bar-Baz, F., Programmer, J. R., & Fancy Last Name, B. (2
 TEST(ParseStep, ParserInitialization) {
     auto init = ParseStep { kTestLine };
 
-    EXPECT_EQ(LineState::LastName, init.state());
     EXPECT_EQ("", init.chunk());
 }
 
@@ -52,7 +51,6 @@ TEST(ParseStep, ParseLastName) {
     auto init = ParseStep { kTestLine };
     auto last = init.parse();
 
-    EXPECT_EQ(LineState::Initials, last.state());
     EXPECT_EQ("Bar-Baz", last.chunk());
 }
 
@@ -60,7 +58,6 @@ TEST(ParseStep, ParseInitials) {
     auto last = ParseStep{kTestLine}.parse();
     auto first = last.parse();
 
-    EXPECT_EQ(LineState::LastName, first.state());
     EXPECT_EQ("F.", first.chunk());
 }
 
@@ -69,24 +66,19 @@ TEST(ParseStep, DetectLastAuthor)  {
     auto first = last.parse();
 
     last = first.parse(); // J. R. Programmer
-    EXPECT_EQ(LineState::Initials, last.state());
     EXPECT_EQ("Programmer", last.chunk());
 
     first = last.parse();
-    EXPECT_EQ(LineState::FinalName, first.state());
     EXPECT_EQ("J. R.", first.chunk());
 
     last = first.parse();
-    EXPECT_EQ(LineState::FinalInitials, last.state());
     EXPECT_EQ("Fancy Last Name", last.chunk());
 
     first = last.parse();
-    EXPECT_EQ(LineState::Suffix, first.state());
     EXPECT_EQ("B.", first.chunk());
 
     // parsing is idempotent on suffix
     last = first.parse();
-    EXPECT_EQ(first.state(), last.state());
     EXPECT_EQ(first.chunk(), last.chunk());
 }
 

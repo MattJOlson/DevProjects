@@ -31,17 +31,11 @@ struct SplitString {
     std::string rest;
 };
 
-// LineState tracks the state of our citation parser.  For multi-author
-// papers the last author's name entry will begin with an ampersand,
-// which we strip off separately; hence the two Final* states.
-enum class LineState {LastName,
-                      Initials,
-                      FinalName,
-                      FinalInitials,
-                      Suffix};
-
 class ParseStep;
-using ParseFunction = std::function<ParseStep(SplitString)>;
+// This somehow causes cannot-convert errors in the ParseStep ctor
+// error: could not convert 'parseLastName' from 'ParseStep(*)(SplitString) to 'ParseFunction {aka std::function<ParseStep(SplitString)>}'
+//using ParseFunction = std::function<ParseStep(SplitString)>;
+typedef ParseStep (*ParseFunction)(SplitString);
 
 ParseStep parseLastName(SplitString next_data);
 ParseStep parseInitials(SplitString next_data);
@@ -56,17 +50,13 @@ ParseStep parseSuffix(SplitString next_data);
 // fixed point).
 class ParseStep {
   public:
-    ParseStep(SplitString input, LineState state=LineState::LastName) :
-        state_(state),
+    ParseStep(SplitString input, ParseFunction parser=parseLastName) :
+        parser_(parser),
         data_(input)
     {}
     ~ParseStep() = default;
     ParseStep(const ParseStep& from) = default;
     ParseStep& operator=(const ParseStep& rhs) = default;
-
-    // state() returns a LineState enum describing the token we're
-    // looking for on the next parse() call.
-    LineState state() const { return state_; }
 
     // chunk() returns the token that this ParseStep extracted.  The
     // initial chunk is an empty string -- we haven't parsed anything
@@ -78,7 +68,7 @@ class ParseStep {
     ParseStep parse() const;
 
   private:
-    LineState state_;
+    ParseFunction parser_;
     SplitString data_;
 };
 
