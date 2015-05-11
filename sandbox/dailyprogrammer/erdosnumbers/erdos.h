@@ -6,6 +6,7 @@
 #ifndef ERDOS_H
 #define ERDOS_H
 
+#include <functional>
 #include <memory>
 #include <string>
 #include <vector>
@@ -38,6 +39,15 @@ enum class LineState {LastName,
                       FinalName,
                       FinalInitials,
                       Suffix};
+
+class ParseStep;
+using ParseFunction = std::function<ParseStep(SplitString)>;
+
+ParseStep parseLastName(SplitString next_data);
+ParseStep parseInitials(SplitString next_data);
+ParseStep parseFinalName(SplitString next_data);
+ParseStep parseFinalInitials(SplitString next_data);
+ParseStep parseSuffix(SplitString next_data);
 
 // A ParseStep is one step of parsing a citation line.  We alternate
 // parsing out last names and first initials, delimited by commas, until

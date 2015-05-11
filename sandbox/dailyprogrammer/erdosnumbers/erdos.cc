@@ -20,8 +20,6 @@ SplitString SplitString::split(std::string delim) const
 
 ParseStep ParseStep::parse() const
 {
-    auto next_data = data_.split(", ");
-
     // XXX: This depends on having an ampersand before the last author's
     // name, so it'll fail on single-author papers.  The whole point of
     // the exercise is that the papers have multiple authors, though, so
@@ -38,25 +36,45 @@ ParseStep ParseStep::parse() const
 
     switch(state_) {
         case LineState::LastName:
-            return ParseStep(next_data, LineState::Initials);
+            return parseLastName(data_.split(", "));
         case LineState::Initials:
-            if(next_data.rest.front() == '&') { // last author
-                next_data.rest.erase(0,2);
-                return ParseStep(next_data, LineState::FinalName);
-            } // else
-            return ParseStep(next_data, LineState::LastName);
+            return parseInitials(data_.split(", "));
         case LineState::FinalName:
-            return ParseStep(next_data, LineState::FinalInitials);
+            return parseFinalName(data_.split(", "));
         case LineState::FinalInitials:
-            next_data = data_.split(" "); // no more commas
-            return ParseStep(next_data, LineState::Suffix);
-        case LineState::Suffix: // suffix is idempotent
-            return ParseStep(data_, LineState::Suffix);
+            return parseFinalInitials(data_.split(" ")); // no more commas
+        case LineState::Suffix:
+            return parseSuffix(data_); // suffix is idempotent
         default: // can't happen
             std::cerr << "ParseStep has invalid state, aborting";
             std::cerr << std::endl;
             exit(1);
     }
+}
+
+ParseStep parseLastName(SplitString next_data)
+{
+    return ParseStep(next_data, LineState::Initials);
+}
+ParseStep parseInitials(SplitString next_data)
+{
+    if(next_data.rest.front() == '&') { // last author
+        next_data.rest.erase(0,2);
+        return ParseStep(next_data, LineState::FinalName);
+    } // else
+    return ParseStep(next_data, LineState::LastName);
+}
+ParseStep parseFinalName(SplitString next_data)
+{
+    return ParseStep(next_data, LineState::FinalInitials);
+}
+ParseStep parseFinalInitials(SplitString next_data)
+{
+    return ParseStep(next_data, LineState::Suffix);
+}
+ParseStep parseSuffix(SplitString next_data)
+{
+    return ParseStep(next_data, LineState::Suffix);
 }
 
 bool Author::links(std::weak_ptr<Author> other) const
