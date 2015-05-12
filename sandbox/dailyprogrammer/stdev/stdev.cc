@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cmath>
 #include <functional>
+#include <iterator>
 #include <iostream>
 #include <vector>
 
@@ -28,10 +29,8 @@ double var(std::vector<int>& ints)
 }
 
 int main() {
-    std::vector<int> ints;
-    int temp;
-
-    while(std::cin >> temp) { ints.push_back(temp); }
+    std::vector<int> ints(std::istream_iterator<int>(std::cin),
+                          std::istream_iterator<int>());
 
     std::cout << sqrt(var(ints)) << std::endl;
 
