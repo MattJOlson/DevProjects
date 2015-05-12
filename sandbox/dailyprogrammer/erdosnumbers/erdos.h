@@ -35,6 +35,7 @@ class ParseStep;
 // This somehow causes cannot-convert errors in the ParseStep ctor
 // error: could not convert 'parseLastName' from 'ParseStep(*)(SplitString) to 'ParseFunction {aka std::function<ParseStep(SplitString)>}'
 //using ParseFunction = std::function<ParseStep(SplitString)>;
+// See also http://stackoverflow.com/questions/30180257/g-4-8-2-could-not-convert-from-function-pointer-to-stdfunction?noredirect=1#comment48466485_30180257
 typedef ParseStep (*ParseFunction)(SplitString);
 
 ParseStep parseLastName(SplitString next_data);
