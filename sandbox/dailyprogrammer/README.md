@@ -16,3 +16,10 @@ http://www.reddit.com/r/dailyprogrammer/comments/30bquq/20150326_challenge_207_b
 So far incomplete.  I'd be done if gcc 4.8.2 supported C++11 regexes; on
 the other hand, this way I get to implement a state machine around
 first-rest list processing and a big whack of value objects.
+
+## stdev (C++11)
+
+Calculating the standard deviation of a set of integers turned into a
+quick exercise in range-for and lambdas.
+
+http://www.reddit.com/r/dailyprogrammer/comments/35l5eo/20150511_challenge_214_easy_calculating_the/
