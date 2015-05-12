@@ -2,10 +2,7 @@
 // Recursive single-pass solution
 // Matt Olson 2015
 
-
-#include <algorithm>
 #include <cmath>
-#include <functional>
 #include <iterator>
 #include <iostream>
 #include <vector>
