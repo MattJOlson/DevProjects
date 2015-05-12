@@ -21,7 +21,7 @@ int main() {
     std::vector<int> ints(std::istream_iterator<int>(std::cin),
                           std::istream_iterator<int>());
 
-    double flex;
+    auto flex = double {0.0};
     std::cout << sqrt(varsum(ints, 0, flex)/ints.size()) << std::endl;
 
     return 0;
