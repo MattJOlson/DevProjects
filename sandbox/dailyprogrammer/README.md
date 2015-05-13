@@ -17,6 +17,15 @@ So far incomplete.  I'd be done if gcc 4.8.2 supported C++11 regexes; on
 the other hand, this way I get to implement a state machine around
 first-rest list processing and a big whack of value objects.
 
+## pileofpaper (C++11, scons)
+
+Another TDD/over-engineered solution, this time to the
+raster-manipulation problem at
+http://www.reddit.com/r/dailyprogrammer/comments/35s2ds/20150513_challenge_214_intermediate_pile_of_paper/
+This one's based on scanlines, which takes me back to the days before
+hardware 3D when engines like Quake's managed hidden-surface removal
+this way.  Nobody even *calls* it "hidden-surface removal" any more.
+
 ## stdev (C++11)
 
 Calculating the standard deviation of a set of integers turned into a
