@@ -19,22 +19,23 @@ IntervalList insertInterval(IntervalList& base, Interval i)
     if(first_inter->start() != i.start()) {
         // Add leading fragment of first_inter
         auto len = i.start() - first_inter->start();
-        result.push_back(Interval {first_inter->start(), len});
+        result.push_back(Interval {first_inter->start(),
+                                   len,
+                                   first_inter->color()});
     }
 
     result.push_back(i);
 
-    auto end = i.start() + i.length();
-
     auto last_inter =
         std::find_if(base.begin(), base.end(),
-                     [&](Interval j) { return j.contains(end); });
+                     [&](Interval j) { return j.contains(i.end()); });
 
-    auto last_end = last_inter->start() + last_inter->length();
-    if(end != last_end) {
+    if(i.end() != last_inter->end()) {
         // Add trailing fragment of last_inter
-        auto len = last_end - end;
-        result.push_back(Interval {end, len});
+        auto len = last_inter->end() - i.end();
+        result.push_back(Interval {i.end()+1,
+                                   len,
+                                   last_inter->color()});
     }
 
     ++last_inter;
