@@ -43,10 +43,31 @@ class Scanline {
     {}
 
     IntervalList& intervals() { return intervals_; }
+
+    void insert(Interval i);
+    int colorCount(int which) const;
   private:
     const int basecolor_ = 0;
     int length_;
     IntervalList intervals_;
+};
+
+class Canvas {
+  public:
+    Canvas(int width, int height) : 
+        width_(width),
+        height_(height),
+        scanlines_(std::vector<Scanline>(height, {width}))
+    {}
+
+    int width() const { return width_; }
+    int height() const { return height_; }
+    int colorCount(int which) const;
+    void insert(int x, int y, int width, int height, int color);
+  private:
+    int width_;
+    int height_;
+    std::vector<Scanline> scanlines_;
 };
 
 #endif

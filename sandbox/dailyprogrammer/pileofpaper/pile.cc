@@ -9,7 +9,8 @@
 
 IntervalList insertInterval(IntervalList& base, Interval i)
 {
-
+    // Brittle; we assume that i.start() is contained in the base
+    // interval list
     auto first_inter =
         std::find_if(base.begin(), base.end(),
                      [&](Interval j) { return j.contains(i.start()); });
@@ -42,4 +43,48 @@ IntervalList insertInterval(IntervalList& base, Interval i)
     result.insert(result.end(), last_inter, base.end());
 
     return result;
+}
+
+void Scanline::insert(Interval i)
+{
+    if(i.start() < 0) {
+        auto new_i = Interval { 0, i.end()+1, i.color() };
+        intervals_ = insertInterval(intervals_, new_i);
+    } else if(length_ <= i.end()) {
+        auto new_i = Interval { i.start(),
+                                length_ - i.start(),
+                                i.color() };
+        intervals_ = insertInterval(intervals_, new_i);
+    } else {
+        intervals_ = insertInterval(intervals_, i);
+    }
+}
+
+int Scanline::colorCount(int which) const
+{
+    auto ct = 0;
+
+    for(auto i : intervals_) {
+        if(i.color() == which) ct += i.length();
+    }
+
+    return ct;
+}
+
+int Canvas::colorCount(int which) const
+{
+    auto ct = 0;
+
+    for(auto l : scanlines_) { ct += l.colorCount(which); }
+
+    return ct;
+}
+
+void Canvas::insert(int x, int y, int width, int height, int color)
+{
+    for(auto i = 0; i < height; i++) {
+        auto l = y + i;
+        if((l < 0) || (height_ <= l)) continue;
+        scanlines_[l].insert({x, width, color});
+    }
 }

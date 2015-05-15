@@ -53,3 +53,63 @@ TEST(Scanline, ScanlineCreation) {
     EXPECT_EQ(19, intervals[0].end());
     EXPECT_EQ(0, intervals[0].color());
 }
+
+TEST(Scanline, ScanlineInsertion) {
+    // from above
+    auto base = IntervalList { Interval {0, 20, 0} };
+    auto truth = insertInterval(base, Interval {5, 10, 7} );
+
+    auto line = Scanline { 20 };
+    line.insert(Interval {5, 10, 7});
+    auto list = line.intervals();
+
+    EXPECT_EQ(truth.size(), list.size());
+
+    for(size_t i = 0; i < truth.size(); i++) {
+        EXPECT_EQ(truth[i].start(), list[i].start());
+        EXPECT_EQ(truth[i].end(),   list[i].end());
+        EXPECT_EQ(truth[i].color(), list[i].color());
+    }
+}
+
+TEST(Scanline, ScanlineClipping) {
+    auto line = Scanline { 20 };
+    line.insert(Interval {15, 10, 1});
+    line.insert(Interval {-5, 10, 2});
+    auto list = line.intervals();
+
+    EXPECT_EQ(0, list[0].start());
+    EXPECT_EQ(19, list[2].end());
+}
+
+TEST(Scanline, ScanlineColorCount) {
+    auto line = Scanline { 20 };
+    line.insert(Interval {15, 5, 1});
+    line.insert(Interval {0, 10, 2});
+    line.insert(Interval {3, 2, 3});
+    
+    // 22233222220000011111
+
+    EXPECT_EQ(5, line.colorCount(0));
+    EXPECT_EQ(5, line.colorCount(1));
+    EXPECT_EQ(8, line.colorCount(2));
+    EXPECT_EQ(2, line.colorCount(3));
+}
+
+TEST(Canvas, CanvasCreation) {
+    auto canvas = Canvas { 20, 10 };
+
+    EXPECT_EQ(20, canvas.width());
+    EXPECT_EQ(10, canvas.height());
+    EXPECT_EQ(200, canvas.colorCount(0));
+}
+
+TEST(Canvas, CanvasInsertion) {
+    auto canvas = Canvas { 20, 10 };
+    canvas.insert(2, 2, 5, 5, 1);
+    canvas.insert(3, 2, 10, 1, 2);
+
+    EXPECT_EQ(169, canvas.colorCount(0));
+    EXPECT_EQ(21, canvas.colorCount(1));
+    EXPECT_EQ(10, canvas.colorCount(2));
+}
