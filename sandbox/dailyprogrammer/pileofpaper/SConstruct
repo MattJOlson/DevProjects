@@ -17,3 +17,6 @@ def UnitTest(env, prefix, objects):
 
 pile_obj = env.Object('pile.cc', CCFLAGS=ccflags)
 pile_test = UnitTest(env, 'pile-tests', [pile_obj])
+
+main_obj = env.Object('pile-main.cc', CCFLAGS=ccflags)
+env.Program('pile', [pile_obj, main_obj])

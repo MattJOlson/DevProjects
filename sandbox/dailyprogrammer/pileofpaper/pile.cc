@@ -60,9 +60,9 @@ void Scanline::insert(Interval i)
     }
 }
 
-int Scanline::colorCount(int which) const
+long long Scanline::colorCount(int which) const
 {
-    auto ct = 0;
+    auto ct = 0ll;
 
     for(auto i : intervals_) {
         if(i.color() == which) ct += i.length();
@@ -71,9 +71,9 @@ int Scanline::colorCount(int which) const
     return ct;
 }
 
-int Canvas::colorCount(int which) const
+long long Canvas::colorCount(int which) const
 {
-    auto ct = 0;
+    auto ct = 0ll;
 
     for(auto l : scanlines_) { ct += l.colorCount(which); }
 

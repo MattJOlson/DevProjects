@@ -45,7 +45,7 @@ class Scanline {
     IntervalList& intervals() { return intervals_; }
 
     void insert(Interval i);
-    int colorCount(int which) const;
+    long long colorCount(int which) const;
   private:
     const int basecolor_ = 0;
     int length_;
@@ -62,7 +62,7 @@ class Canvas {
 
     int width() const { return width_; }
     int height() const { return height_; }
-    int colorCount(int which) const;
+    long long colorCount(int which) const;
     void insert(int x, int y, int width, int height, int color);
   private:
     int width_;
