@@ -24,7 +24,7 @@ raster-manipulation problem at
 http://www.reddit.com/r/dailyprogrammer/comments/35s2ds/20150513_challenge_214_intermediate_pile_of_paper/
 This one's based on scanlines, which takes me back to the days before
 hardware 3D when engines like Quake's managed hidden-surface removal
-this way.  Nobody even *calls* it "hidden-surface removal" any more.
+this way.
 
 ## stdev (C++11)
 
