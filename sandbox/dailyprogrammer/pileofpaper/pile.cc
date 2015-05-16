@@ -45,19 +45,15 @@ IntervalList insertInterval(IntervalList& base, Interval i)
     return result;
 }
 
+#include <cstdio>
+
 void Scanline::insert(Interval i)
 {
-    if(i.start() < 0) {
-        auto new_i = Interval { 0, i.end()+1, i.color() };
-        intervals_ = insertInterval(intervals_, new_i);
-    } else if(length_ <= i.end()) {
-        auto new_i = Interval { i.start(),
-                                length_ - i.start(),
-                                i.color() };
-        intervals_ = insertInterval(intervals_, new_i);
-    } else {
-        intervals_ = insertInterval(intervals_, i);
-    }
+    auto start = std::max(i.start(), 0);
+    auto end = std::min(i.end(), length_-1);
+    auto length = end - start + 1;
+
+    intervals_ = insertInterval(intervals_, {start, length, i.color()});
 }
 
 long long Scanline::colorCount(int which) const
