@@ -27,3 +27,8 @@ tuple_objs = [tup + pt + vec + mat]
 # tests for tuple types
 tup_test = UnitTest(env, 'tuple-tests', tuple_objs)
 mat_test = UnitTest(env, 'matrix-tests', tuple_objs)
+
+# library
+lib = env.StaticLibrary('geom', [tup, pt, vec, mat])
+env.Install(libpath[0], lib)
+env.Alias('install', libpath[0])
