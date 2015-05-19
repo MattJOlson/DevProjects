@@ -1,0 +1,22 @@
+env = Environment(CPPPATH=['/home/matt/include', 'include'])
+ccflags = ['-Wall', '--std=c++11', '-pedantic']
+testlibs = ['gtest_main', 'gtest', 'pthread', 'geom']
+libpath = ['/home/matt/lib']
+
+def UnitTest(env, prefix, objects):
+    cur_test = env.Object(prefix + '.cc', CCFLAGS=ccflags)
+    cur_test_exe = env.Program(prefix,
+                               cur_test + objects,
+                               LIBS=testlibs,
+                               LIBPATH=libpath)
+    run_cur_test = env.Command('dummy' + prefix,
+                               cur_test_exe,
+                               cur_test_exe[0].abspath)
+    Depends(run_cur_test, cur_test_exe)
+    return cur_test
+
+vptree_obj = env.Object('vptree.cc', CCFLAGS=ccflags)
+vptree_test = UnitTest(env, 'vptree-tests', [vptree_obj])
+
+# main_obj = env.Object('pile-main.cc', CCFLAGS=ccflags)
+# env.Program('pile', [pile_obj, main_obj])
