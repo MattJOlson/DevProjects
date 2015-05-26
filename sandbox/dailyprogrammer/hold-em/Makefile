@@ -3,7 +3,7 @@ all: card.dll
 card.dll: card.cs
 	mcs -t:library card.cs
 
-card-test.dll: card-test.cs card.dll
+card-test.dll: card.dll card-test.cs
 	mcs -t:library -pkg:mono-nunit -r:card.dll card-test.cs
 
 test: card-test.dll
