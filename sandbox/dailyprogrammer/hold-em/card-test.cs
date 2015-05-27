@@ -9,16 +9,16 @@ namespace HoldEm
         [Test]
         public void CardConstruction()
         {
-            var twoclubs = new Card(Suit.Clubs, Value.Two);
+            var twoclubs = new Card(Suit.Clubs, Rank.Two);
 
             Assert.AreEqual(twoclubs.suit, Suit.Clubs);
-            Assert.AreEqual(twoclubs.val, Value.Two);
+            Assert.AreEqual(twoclubs.rank, Rank.Two);
         }
 
         [Test]
         public void CardToString()
         {
-            var twoclubs = new Card(Suit.Clubs, Value.Two);
+            var twoclubs = new Card(Suit.Clubs, Rank.Two);
 
             Assert.AreEqual("Two of Clubs", twoclubs.ToString());
         }
@@ -40,12 +40,12 @@ namespace HoldEm
             var deck = new Deck();
             var drawn = 0;
             foreach(Suit suit in Enum.GetValues(typeof(Suit))) {
-                foreach(Value val in Enum.GetValues(typeof(Value))) {
+                foreach(Rank rank in Enum.GetValues(typeof(Rank))) {
                     var card = deck.draw();
                     ++drawn;
 
                     Assert.AreEqual(card.suit, suit);
-                    Assert.AreEqual(card.val, val);
+                    Assert.AreEqual(card.rank, rank);
                     Assert.AreEqual(deck.cardsLeft(), 52-drawn);
                 }
             }
@@ -68,21 +68,20 @@ namespace HoldEm
         {
             var player = new Player();
 
-            var flag = player.dealTo(new Card(Suit.Clubs, Value.Two));
+            player.dealTo(new Card(Suit.Clubs, Rank.Two));
 
-            Assert.True(flag);
             Assert.AreEqual(player.hand.Count, 1);
             Assert.AreEqual(player.hand[0].suit, Suit.Clubs);
-            Assert.AreEqual(player.hand[0].val, Value.Two);
+            Assert.AreEqual(player.hand[0].rank, Rank.Two);
 
-            flag = player.dealTo(new Card(Suit.Diamonds, Value.Seven));
-            Assert.True(flag);
+            player.dealTo(new Card(Suit.Diamonds, Rank.Seven));
             Assert.AreEqual(player.hand.Count, 2);
             Assert.AreEqual(player.hand[1].suit, Suit.Diamonds);
-            Assert.AreEqual(player.hand[1].val, Value.Seven);
+            Assert.AreEqual(player.hand[1].rank, Rank.Seven);
 
-            flag = player.dealTo(new Card(Suit.Spades, Value.Ace));
-            Assert.False(flag);
+            Assert.Throws(typeof(InvalidOperationException),
+                () => player.dealTo(new Card(Suit.Spades, Rank.Ace)),
+                string.Format("{0} hand is full", player.name));
             Assert.AreEqual(player.hand.Count, 2);
         }
 
@@ -90,8 +89,8 @@ namespace HoldEm
         public void PlayerToString()
         {
             var player = new Player("CPU 1");
-            player.dealTo(new Card(Suit.Clubs, Value.Two));
-            player.dealTo(new Card(Suit.Diamonds, Value.Seven));
+            player.dealTo(new Card(Suit.Clubs, Rank.Two));
+            player.dealTo(new Card(Suit.Diamonds, Rank.Seven));
 
             Assert.AreEqual(player.ToString(),
                             "CPU 1: Two of Clubs, Seven of Diamonds");

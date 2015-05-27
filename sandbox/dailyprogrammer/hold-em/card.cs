@@ -4,33 +4,22 @@ namespace HoldEm
     using System.Collections.Generic;
 
     public enum Suit { Clubs, Diamonds, Hearts, Spades };
-    public enum Value { Two,
-                        Three,
-                        Four,
-                        Five,
-                        Six,
-                        Seven,
-                        Eight,
-                        Nine,
-                        Ten,
-                        Jack,
-                        Queen,
-                        King,
-                        Ace };
+    public enum Rank { Two, Three, Four, Five, Six, Seven, Eight, Nine,
+                       Ten, Jack, Queen, King, Ace };
 
     public class Card
     {
-        public Card(Suit s, Value v)
+        public Card(Suit s, Rank r)
         {
             suit = s;
-            val = v;
+            rank = r;
         }
 
         public Suit suit { get; private set; }
-        public Value val { get; private set; }
+        public Rank rank { get; private set; }
 
         public override string ToString() {
-            return string.Format("{0} of {1}", val, suit);
+            return string.Format("{0} of {1}", rank, suit);
         }
     }
 
@@ -41,8 +30,8 @@ namespace HoldEm
             deck_ = new List<Card>();
 
             foreach(Suit suit in Enum.GetValues(typeof(Suit))) {
-                foreach(Value val in Enum.GetValues(typeof(Value))) {
-                    deck_.Add(new Card(suit, val));
+                foreach(Rank rank in Enum.GetValues(typeof(Rank))) {
+                    deck_.Add(new Card(suit, rank));
                 }
             }
         }
@@ -85,12 +74,15 @@ namespace HoldEm
             hand = new List<Card>();
         }
 
-        public bool dealTo(Card c)
+        public void dealTo(Card c)
         {
-            if(hand.Count == 2) return false;
+            if(hand.Count == 2) {
+                throw new InvalidOperationException(
+                    string.Format("{0} hand is full", name)
+                );
+            }
 
             hand.Add(c);
-            return true;
         }
 
         public override string ToString()
