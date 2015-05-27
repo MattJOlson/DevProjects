@@ -30,7 +30,8 @@ namespace HoldEm
         public Value val { get; private set; }
 
         public override string ToString() {
-            return val.ToString() + " of " + suit.ToString();
+            return string.Format("{0} of {1}",
+                                 val.ToString(), suit.ToString());
         }
     }
 
@@ -60,7 +61,7 @@ namespace HoldEm
             Random rng = new Random();
 
             // Fisher-Yates shuffle
-            for(int i = deck_.Count-1; 0 <= i; i++) {
+            for(int i = deck_.Count-1; 0 <= i; i--) {
                 int j = rng.Next(0, i+1);
                 Card c = deck_[i];
                 deck_[i] = deck_[j];
@@ -68,6 +69,44 @@ namespace HoldEm
             }
         }
 
+        public void list() // kind of hacky but mostly for debugging
+        {
+            Console.WriteLine("{0} cards in deck:", deck_.Count);
+            foreach (Card c in deck_) {
+                Console.WriteLine(c.ToString());
+            }
+        }
+
         private List<Card> deck_;
+    }
+
+    public class Player
+    {
+        public Player(string n="Player")
+        {
+            name = n;
+            hand = new List<Card>();
+        }
+
+        public bool dealTo(Card c)
+        {
+            if(hand.Count == 2) return false;
+
+            hand.Add(c);
+            return true;
+        }
+
+        public override string ToString()
+        {
+            string s = string.Format("{0}: ", name);
+            for(int i = 0; i < hand.Count; i++) {
+                if(0 < i) { s += ", "; }
+                s += hand[i].ToString();
+            }
+            return s;
+        }
+
+        public List<Card> hand { get; private set; }
+        public string name { get; private set; }
     }
 }

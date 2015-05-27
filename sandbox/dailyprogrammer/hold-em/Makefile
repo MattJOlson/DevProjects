@@ -1,4 +1,7 @@
-all: card.dll
+all: hold-em
+
+hold-em: card.dll hold-em.cs
+	mcs -t:exe -r:card.dll hold-em.cs
 
 card.dll: card.cs
 	mcs -t:library card.cs
