@@ -20,7 +20,7 @@ namespace HoldEm
 
             players.Add(new Player()); // user
             for(int i = 1; i < nPlayers; i++) {
-                players.Add(new Player("CPU" + i.ToString()));
+                players.Add(new Player("CPU" + i));
             }
 
             return players;
@@ -29,16 +29,14 @@ namespace HoldEm
         static void dealPlayerHands(List<Player> players, Deck deck)
         {
             for(int i = 0; i < 2; i++) {
-                foreach(Player p in players) {
-                    p.dealTo(deck.draw());
-                }
+                players.ForEach(p => p.dealTo(deck.draw()));
             }
         }
 
         static void burnFrom(Deck deck)
         {
             Card c = deck.draw();
-            Console.WriteLine("<burned: {0}>", c.ToString());
+            Console.WriteLine("<burned: {0}>", c);
         }
 
         static void deal(string which, int howMany, Deck deck)
@@ -48,7 +46,7 @@ namespace HoldEm
             for(int i = 0; i < howMany; i++) {
                 if(0 < i) { Console.Write(", "); }
                 Card c = deck.draw();
-                Console.Write(c.ToString());
+                Console.Write(c);
             }
             Console.WriteLine();
         }
@@ -65,10 +63,7 @@ namespace HoldEm
 
             dealPlayerHands(players, deck);
 
-            foreach(Player p in players) {
-                Console.WriteLine(p.ToString());
-            }
-
+            players.ForEach(p => Console.WriteLine(p));
 
             deal("Flop", 3, deck);
 

@@ -30,8 +30,7 @@ namespace HoldEm
         public Value val { get; private set; }
 
         public override string ToString() {
-            return string.Format("{0} of {1}",
-                                 val.ToString(), suit.ToString());
+            return string.Format("{0} of {1}", val, suit);
         }
     }
 
@@ -72,9 +71,7 @@ namespace HoldEm
         public void list() // kind of hacky but mostly for debugging
         {
             Console.WriteLine("{0} cards in deck:", deck_.Count);
-            foreach (Card c in deck_) {
-                Console.WriteLine(c.ToString());
-            }
+            deck_.ForEach(c => Console.WriteLine(c));
         }
 
         private List<Card> deck_;
