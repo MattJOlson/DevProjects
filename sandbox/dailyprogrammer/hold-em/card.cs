@@ -7,7 +7,7 @@ namespace HoldEm
     public enum Rank { Two, Three, Four, Five, Six, Seven, Eight, Nine,
                        Ten, Jack, Queen, King, Ace };
 
-    public class Card
+    public class Card : IComparable<Card>
     {
         public Card(Suit s, Rank r)
         {
@@ -20,6 +20,45 @@ namespace HoldEm
 
         public override string ToString() {
             return string.Format("{0} of {1}", rank, suit);
+        }
+
+        public int CompareTo(Card rhs)
+        {
+            if(rhs == null) return 1;
+
+
+            return rank.CompareTo(rhs.rank);
+        }
+
+        public static bool operator<(Card lhs, Card rhs)
+        {
+            return lhs.CompareTo(rhs) < 0;
+        }
+
+        public static bool operator>(Card lhs, Card rhs)
+        {
+            return lhs.CompareTo(rhs) > 0;
+        }
+
+        public static bool operator==(Card lhs, Card rhs)
+        {
+            return lhs.Equals(rhs);
+        }
+        public static bool operator!=(Card lhs, Card rhs)
+        {
+            return !(lhs == rhs);
+        }
+        public override bool Equals(object rhs)
+        {
+            if(rhs == null) return false;
+            Card rhs_card = rhs as Card;
+            if(rhs_card == null) return false;
+
+            return CompareTo(rhs_card) == 0;
+        }
+        public override int GetHashCode()
+        {
+            return (int)rank;
         }
     }
 
@@ -98,4 +137,5 @@ namespace HoldEm
         public List<Card> hand { get; private set; }
         public string name { get; private set; }
     }
+
 }

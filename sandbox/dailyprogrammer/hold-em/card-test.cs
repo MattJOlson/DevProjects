@@ -22,6 +22,18 @@ namespace HoldEm
 
             Assert.AreEqual("Two of Clubs", twoclubs.ToString());
         }
+
+        [Test]
+        public void CardOrdering()
+        {
+            var twoclubs = new Card(Suit.Clubs, Rank.Two);
+            var twohearts = new Card(Suit.Hearts, Rank.Two);
+            var sevendiamonds = new Card(Suit.Diamonds, Rank.Seven);
+
+            Assert.AreEqual(true, twoclubs < sevendiamonds);
+            Assert.True(sevendiamonds > twoclubs);
+            Assert.True(twoclubs == twohearts);
+        }
     }
 
     [TestFixture]
@@ -96,4 +108,5 @@ namespace HoldEm
                             "CPU 1: Two of Clubs, Seven of Diamonds");
         }
     }
+
 }
