@@ -3,7 +3,6 @@ namespace Kata04
     using System;
     using System.Collections.Generic;
     using NUnit.Framework;
-    using Kata04;
 
     [TestFixture]
     public class FootballTest
