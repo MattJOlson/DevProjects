@@ -1,0 +1,15 @@
+{
+  "name": "tdl",
+  "version": "0.0.0",
+  "description": "Dirt-simple to-do list",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Matt Olson <matt.j.olson@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "~4.13.3",
+    "gulp": "~3.9.0"
+  }
+}
