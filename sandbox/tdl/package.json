@@ -4,12 +4,16 @@
   "description": "Dirt-simple to-do list",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Derp, no tests yet\" && exit 1"
   },
   "author": "Matt Olson <matt.j.olson@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "express": "~4.13.3",
-    "gulp": "~3.9.0"
+    "gulp": "~3.9.0",
+    "jasmine": "~2.3.2",
+    "karma": "~0.13.7",
+    "node-gyp": "~2.0.2",
+    "angular": "~1.4.3"
   }
 }
