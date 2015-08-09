@@ -1,7 +1,9 @@
 doctype html
-html
+html(ng-app="tdlApp")
   head
-    title= title
+    meta(charset='utf-8')
+    base(href='/')
+    title tdl
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    block content
+    block body

@@ -1,5 +1,8 @@
 extends layout
 
-block content
-  h1= title
-  p Welcome to #{title}
+block body
+  div
+    h1= title
+  div(ng-view)
+
+  script(TODO)
