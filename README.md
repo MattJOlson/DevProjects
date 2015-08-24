@@ -22,3 +22,8 @@ to begin with.
 A place for simple(-ish) programming problems, experiments with new
 languages, APIs, and techniques, and anything that doesn't fit into an
 actual project.
+
+## Utils
+
+A collection of (mostly pretty simple) utility libraries for C# that
+might maybe make it into Nuget some day.
