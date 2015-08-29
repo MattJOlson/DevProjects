@@ -31,4 +31,11 @@ namespace Demand.Tests
             Assert.DoesNotThrow(() => Demand.That(true, "because it's true!"));
         }
     }
+
+    [TestFixture]
+    public class ListTests
+    {
+        [Test]
+        public void
+    }
 }
