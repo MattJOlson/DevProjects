@@ -4,6 +4,9 @@
 # NCrunch files
 *.ncrunch*
 
+# git shit
+.gitattributes
+
 # User-specific files
 *.suo
 *.user

@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace Demand.Tests
@@ -11,7 +12,8 @@ namespace Demand.Tests
         {
             var trueIsSuccess = Demand.That(() => true);
 
-            Assert.DoesNotThrow(() => trueIsSuccess.Because("We don't throw on success"));
+            Action vrfy = () => trueIsSuccess.Because("We don't throw on success");
+            vrfy.ShouldNotThrow();
         }
 
         [Test]
@@ -19,23 +21,27 @@ namespace Demand.Tests
         {
             var falseIsFailure = Demand.That(() => false);
 
-            var ex = Assert.Throws<InvalidOperationException>(
-                () => falseIsFailure.Because("We throw on failure")
-            );
-            Assert.That(ex.Message, Is.EqualTo("We throw on failure"));
+            Action vrfy = () => falseIsFailure.Because("We throw on failure");
+
+            vrfy.ShouldThrow<InvalidOperationException>()
+                .WithMessage("We throw on failure");
         }
 
         [Test]
         public void demanding_a_true_expression_succeeds_right_away()
         {
-            Assert.DoesNotThrow(() => Demand.That(true, "because it's true!"));
-        }
-    }
+            Action vrfy = () => Demand.That(true, "because it's true!");
 
-    [TestFixture]
-    public class ListTests
-    {
+            vrfy.ShouldNotThrow();
+        }
+
         [Test]
-        public void
+        public void demanding_a_false_expression_throws_right_away()
+        {
+            Action vrfy = () => Demand.That(false, "throws right away");
+
+            vrfy.ShouldThrow<InvalidOperationException>()
+                .WithMessage("throws right away");
+        }
     }
 }

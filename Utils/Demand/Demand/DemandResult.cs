@@ -4,7 +4,7 @@ namespace Demand
 {
     public class DemandResult
     {
-        private Func<bool> _predicate;
+        private readonly Func<bool> _predicate;
 
         public DemandResult(Func<bool> predicate)
         {
