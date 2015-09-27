@@ -68,7 +68,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Domain\Formation.cs" />
+    <Compile Include="Domain\Position.cs" />
     <Compile Include="Tests.Unit\Domain\FormationTests.cs" />
+    <Compile Include="Tests.Unit\Util\PtTests.cs" />
+    <Compile Include="Util\Pt.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

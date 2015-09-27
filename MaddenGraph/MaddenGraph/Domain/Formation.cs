@@ -19,8 +19,8 @@ namespace MaddenGraph.Domain
         public List<int> Positions { get; }
         public List<int> EligibleReceivers => WeakSideReceivers.Concat(StrongSideReceivers).Concat(BackfieldReceivers).ToList();
 
-        public List<int> StrongSideReceivers { get; set; }
+        public List<int> StrongSideReceivers { get; }
         public List<int> WeakSideReceivers { get; }
-        public List<int> BackfieldReceivers { get; set; }
+        public List<int> BackfieldReceivers { get; }
     }
 }
