@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Linq;
+using FluentAssertions;
 using MaddenGraph.Domain;
 using NUnit.Framework;
 
@@ -31,6 +32,16 @@ namespace MaddenGraph.Tests.Unit.Domain
             formation.WeakSideReceivers.Count.Should().Be(2);
             formation.StrongSideReceivers.Count.Should().Be(2);
             formation.BackfieldReceivers.Count.Should().Be(1);
+        }
+
+        [Test]
+        public void all_eligible_receivers_really_are_eligible()
+        {
+            var formation = new Formation(2,2);
+
+            foreach (var p in formation.EligibleReceivers) {
+                p.IsEligible.Should().BeTrue();
+            }
         }
     }
 }
