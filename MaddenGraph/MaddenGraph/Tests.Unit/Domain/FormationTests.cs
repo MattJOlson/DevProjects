@@ -35,7 +35,17 @@ namespace MaddenGraph.Tests.Unit.Domain
         }
 
         [Test]
-        public void all_eligible_receivers_really_are_eligible()
+        public void formation_construction_allows_quads_formations_too()
+        {
+            var formation = new Formation(1,4);
+
+            formation.WeakSideReceivers.Count.Should().Be(1);
+            formation.StrongSideReceivers.Count.Should().Be(4);
+            formation.BackfieldReceivers.Count.Should().Be(0);
+        }
+
+        [Test]
+        public void all_eligible_receivers_in_a_formation_really_are_eligible()
         {
             var formation = new Formation(2,2);
 
