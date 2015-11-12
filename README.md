@@ -21,6 +21,5 @@ languages, APIs, and techniques, and anything that doesn't fit into an
 actual project.
 
 ## Utils
-
-A collection of (mostly pretty simple) utility libraries for C# that
-might maybe make it into Nuget some day.
+Now lives in [its own repo](https://github.com/MattJOlson/MattUtils)
+because I prefer having one repo per project.
