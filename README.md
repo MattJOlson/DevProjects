@@ -3,6 +3,13 @@
 A collection of software projects ranging from the useful to the
 frivolous.
 
+## FPinFS (F#, VS)
+
+I've wanted to learn F# for a good long time now. I just picked up the
+(excellent so far) [Functional Programming In
+Scala](https://www.manning.com/books/functional-programming-in-scala).
+Why not work through the examples in F#?
+
 ## geom (C++11, scons)
 
 A basic geometry library, so far covering only 2d homogeneous points,
