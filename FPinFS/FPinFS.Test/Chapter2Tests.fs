@@ -42,3 +42,8 @@ let ``when given a function on pairs with three types, curry still returns a cur
 [<Test>]
 let ``when given a partially-applicable function, uncurry returns a function on pairs``() =
     uncurry (fun x y -> x.ToString() + y.ToString()) (42, true) |> should equal "42True"
+
+// 2.5. Compose
+[<Test>]
+let ``when two unary functions are composed, the result is f(g(x))``() =
+    compose (fun x -> 2*x) (fun x -> x-1) 17 |> should equal 32

@@ -16,3 +16,6 @@ let curry (f :('a * 'b) -> 'c) =
 
 let uncurry (f :'a -> 'b -> 'c) =
     fun (a, b) -> f a b
+
+let compose f g =
+    fun x -> f (g x)
