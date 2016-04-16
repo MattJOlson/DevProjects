@@ -30,13 +30,13 @@ let ``when input isn't sorted, isSorted returns false``() =
 // 2.3. Currying
 [<Test>]
 let ``when given a function on pairs, curry returns a curried function``() =
-    let curried = curry (fun (a, b) -> a + b) 42
-    curried 27 |> should equal 69
+    let curried = curry (fun (a, b) -> a + b)
+    curried 42 27 |> should equal 69
 
 [<Test>]
 let ``when given a function on pairs with three types, curry still returns a curried function``() =
-    let curried = curry (fun (a,b) -> a.ToString() + b.ToString()) 42
-    curried true |> should equal "42True"
+    let curried = curry (fun (a,b) -> a.ToString() + b.ToString())
+    curried 42 true |> should equal "42True"
 
 // 2.4. Uncurrying
 [<Test>]

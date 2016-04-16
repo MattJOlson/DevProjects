@@ -11,8 +11,8 @@ let rec isSorted f els =
     | [_] -> true
     | a :: b :: cs -> (f a b) && isSorted f (b :: cs)
 
-let curry (f :('a * 'b) -> 'c) x =
-    fun y -> f (x,y)
+let curry (f :('a * 'b) -> 'c) =
+    fun x y -> f (x,y)
 
 let uncurry (f :'a -> 'b -> 'c) =
     fun (a, b) -> f a b
