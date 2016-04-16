@@ -34,6 +34,11 @@ let ``when given a function on pairs, curry returns a curried function``() =
     curried 27 |> should equal 69
 
 [<Test>]
-let ``when given function on pairs with three types, curry still returns a curried function``() =
+let ``when given a function on pairs with three types, curry still returns a curried function``() =
     let curried = curry (fun (a,b) -> a.ToString() + b.ToString()) 42
     curried true |> should equal "42True"
+
+// 2.4. Uncurrying
+[<Test>]
+let ``when given a partially-applicable function, uncurry returns a function on pairs``() =
+    uncurry (fun x y -> x.ToString() + y.ToString()) (42, true) |> should equal "42True"

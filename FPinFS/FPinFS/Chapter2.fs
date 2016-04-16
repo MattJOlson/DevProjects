@@ -13,3 +13,6 @@ let rec isSorted f els =
 
 let curry (f :('a * 'b) -> 'c) x =
     fun y -> f (x,y)
+
+let uncurry (f :'a -> 'b -> 'c) =
+    fun (a, b) -> f a b
