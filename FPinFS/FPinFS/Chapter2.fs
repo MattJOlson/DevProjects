@@ -10,3 +10,6 @@ let rec isSorted f els =
     | [] -> true
     | [_] -> true
     | a :: b :: cs -> (f a b) && isSorted f (b :: cs)
+
+let curry (f :('a * 'b) -> 'c) x =
+    fun y -> f (x,y)
