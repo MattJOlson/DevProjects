@@ -1,8 +1,8 @@
 ﻿module FPinFS.Test.Chapter2
 
+open FPinFS.Chapter2
 open NUnit.Framework
 open FsUnit
-open FPinFS.Chapter2
 
 [<TestCase(0, 0)>]
 [<TestCase(1, 1)>]
@@ -13,16 +13,14 @@ open FPinFS.Chapter2
 let ``fib implements fibonacci sequence``(a, expected) =
     fib a |> should equal expected
 
-//let rec isSorted f els =
-//    match els with
-//    | [] -> true
-//    | [_] -> true
-//    | a :: b :: cs -> (f a b) && isSorted f (b :: cs)
-
 [<Test>]
-let ``isSorted returns true on an empty list``() =
+let ``when input is empty, isSorted returns true``() =
     isSorted (<=) [] |> should equal true
 
 [<Test>]
-let ``isSorted detects a sorted list``() =
+let ``when input is sorted, isSorted returns true``() =
     isSorted (<=) [1; 2; 4; 8] |> should equal true
+
+[<Test>]
+let ``when input isn't sorted, isSorted returns false``() =
+    isSorted (<=) [1; 2; 1; 4] |> should equal false
