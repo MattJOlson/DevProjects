@@ -52,7 +52,7 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Chapter2Tests.fs" />
-    <None Include="Script.fsx" />
+    <Compile Include="Chapter3Tests.fs" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
