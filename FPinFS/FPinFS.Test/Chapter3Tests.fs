@@ -64,3 +64,14 @@ let ``init of an n-element list should be the first n-1 elements of that list``(
     let expected = Enumerable.Range(1, n-1) |> Seq.toList
 
     init ns |> should equal expected
+
+// foldr; given, but w/e -- TDD y'all!
+[<Test>]
+let ``foldr of empty is empty``() =
+    foldr [] (+) 0 |> should equal 0
+
+[<TestCase(1, 1)>]  // 1 - 0 = 1
+[<TestCase(4, -2)>] // 1 - (2 - (3 - (4 - 0))) = -2
+let ``foldr of a list is what you'd expect``(n, expected) =
+    let ns = Enumerable.Range(1, n) |> Seq.toList
+    foldr ns (-) 0 |> should equal expected

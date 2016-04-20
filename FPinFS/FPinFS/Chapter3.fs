@@ -20,3 +20,7 @@ let rec init els = match els with
     | [] -> []
     | [_] -> []
     | i :: is -> i :: init is
+
+let rec foldr els f i = match els with
+    | [] -> i
+    | x :: xs -> f x (foldr xs (f) i)
