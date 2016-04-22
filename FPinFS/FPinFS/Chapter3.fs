@@ -21,6 +21,13 @@ let rec init els = match els with
     | [_] -> []
     | i :: is -> i :: init is
 
-let rec foldr els f i = match els with
+let rec foldr els i f = match els with
     | [] -> i
-    | x :: xs -> f x (foldr xs (f) i)
+    | x :: xs -> f x (foldr xs i f)
+
+let rec length els =
+    foldr els 0 (fun el l -> 1+l)
+
+let rec foldl els i f = match els with
+    | [] -> i
+    | x :: xs -> foldl xs (f i x) f

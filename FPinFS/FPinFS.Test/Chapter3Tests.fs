@@ -68,10 +68,36 @@ let ``init of an n-element list should be the first n-1 elements of that list``(
 // foldr; given, but w/e -- TDD y'all!
 [<Test>]
 let ``foldr of empty is empty``() =
-    foldr [] (+) 0 |> should equal 0
+    foldr [] 0 (+) |> should equal 0
 
 [<TestCase(1, 1)>]  // 1 - 0 = 1
 [<TestCase(4, -2)>] // 1 - (2 - (3 - (4 - 0))) = -2
 let ``foldr of a list is what you'd expect``(n, expected) =
     let ns = Enumerable.Range(1, n) |> Seq.toList
-    foldr ns (-) 0 |> should equal expected
+    foldr ns 0 (-) |> should equal expected
+
+// 3.8. foldr as identity
+[<Test>]
+let ``foldr someList cons nil is the identity function``() =
+    // :: isn't an operator, so foldr list (::) [] doesn't compile
+    // Not sure why foldr list (List<_>.Cons) [] doesn't work. but meh
+    foldr [1;2;3] [] (fun a b -> a :: b) |> should equal [1;2;3]
+
+// 3.9. length with foldr
+[<TestCase(0)>]
+[<TestCase(1)>]
+[<TestCase(9)>]
+let ``length can be computed with foldr``(len) =
+    let list = Enumerable.Range(1, len) |> Seq.toList
+    length list |> should equal len
+
+// 3.10. foldl
+[<Test>]
+let ``foldl of empty is empty``() =
+    foldl [] 0 (+) |> should equal 0
+
+[<TestCase(1, -1)>]  // 0 - 1 = -1
+[<TestCase(4, -10)>] // 0 - 1 - 2 - 3 - 4 = -10
+let ``foldl of a list is what you'd expect``(n, expected) =
+    let ns = Enumerable.Range(1, n) |> Seq.toList
+    foldl ns 0 (-) |> should equal expected
