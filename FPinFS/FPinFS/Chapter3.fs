@@ -33,4 +33,5 @@ let rec foldl els i f = match els with
     | x :: xs -> foldl xs (f i x) f
 
 let rec reverse els =
-    foldr els [] (fun head reversed -> reversed @ [head])
+    //foldr els [] (fun head reversed -> reversed @ [head]) // You could do it this way, too, though it's not tail-recursive
+    foldl els [] (fun reversed head -> head :: reversed)
