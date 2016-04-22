@@ -101,3 +101,14 @@ let ``foldl of empty is empty``() =
 let ``foldl of a list is what you'd expect``(n, expected) =
     let ns = Enumerable.Range(1, n) |> Seq.toList
     foldl ns 0 (-) |> should equal expected
+
+// Skipping 3.11 because sum, product, and list-length are commutative
+
+// 3.12. reverse
+[<Test>]
+let ``reverse of empty is empty``() =
+    reverse [] |> should equal []
+
+[<Test>]
+let ``reverse of a list is what you'd expect``() =
+    reverse [1;2;3] |> should equal [3;2;1]

@@ -31,3 +31,6 @@ let rec length els =
 let rec foldl els i f = match els with
     | [] -> i
     | x :: xs -> foldl xs (f i x) f
+
+let rec reverse els =
+    foldr els [] (fun head reversed -> reversed @ [head])
