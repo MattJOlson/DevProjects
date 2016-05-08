@@ -25,7 +25,7 @@ let rec foldr els i f = match els with
     | [] -> i
     | x :: xs -> f x (foldr xs i f)
 
-let rec length els =
+let length els =
     foldr els 0 (fun el l -> 1+l)
 
 let rec foldl els i f = match els with
@@ -35,3 +35,12 @@ let rec foldl els i f = match els with
 let rec reverse els =
     //foldr els [] (fun head reversed -> reversed @ [head]) // You could do it this way, too, though it's not tail-recursive
     foldl els [] (fun reversed head -> head :: reversed)
+
+let foldr' els i f = foldl (reverse els) i (fun a b -> f b a)
+
+//let append xs ys = foldr xs ys (fun a b -> a :: b)
+let append xs ys = foldl (reverse xs) ys (fun a b -> b :: a)
+
+let rec flatmap lists = match lists with
+    | [] -> []
+    | list :: lists -> append list (flatmap lists)

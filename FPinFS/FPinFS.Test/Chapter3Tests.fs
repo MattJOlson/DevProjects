@@ -78,7 +78,7 @@ let ``foldr of a list is what you'd expect``(n, expected) =
 
 // 3.8. foldr as identity
 [<Test>]
-let ``foldr someList cons nil is the identity function``() =
+let ``foldr someList nil cons is the identity function``() =
     // :: isn't an operator, so foldr list (::) [] doesn't compile
     // Not sure why foldr list (List<_>.Cons) [] doesn't work. but meh
     foldr [1;2;3] [] (fun a b -> a :: b) |> should equal [1;2;3]
@@ -112,3 +112,28 @@ let ``reverse of empty is empty``() =
 [<Test>]
 let ``reverse of a list is what you'd expect``() =
     reverse [1;2;3] |> should equal [3;2;1]
+
+// 3.13. foldr from foldl
+[<TestCase(1, 1)>]  // 1 - 0 = 1
+[<TestCase(4, -2)>] // 1 - (2 - (3 - (4 - 0))) = -2
+let ``foldr' of a list is what you'd expect``(n, expected) =
+    let ns = Enumerable.Range(1, n) |> Seq.toList
+    foldr' ns 0 (-) |> should equal expected
+
+// 3.14. append from fold
+[<Test>]
+let ``append [foo] onto an empty list gives [foo]``() =
+    append [] [3] |> should equal [3]
+
+[<Test>]
+let ``append foo onto a nonempty list puts foo on the end``() =
+    append [1;2;3] [4] |> should equal [1;2;3;4]
+
+// 3.15. flatmap
+[<Test>]
+let ``flatmap of an empty list is an empty list``() =
+    flatmap [] |> should equal []
+
+[<Test>]
+let ``flatmap of a single list extracts the inner list``() =
+    flatmap [[1;2;3]] |> should equal [1;2;3]
