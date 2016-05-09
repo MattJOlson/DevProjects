@@ -132,8 +132,72 @@ let ``append foo onto a nonempty list puts foo on the end``() =
 // 3.15. flatmap
 [<Test>]
 let ``flatmap of an empty list is an empty list``() =
-    flatmap [] |> should equal []
+    flatten [] |> should equal []
 
 [<Test>]
 let ``flatmap of a single list extracts the inner list``() =
-    flatmap [[1;2;3]] |> should equal [1;2;3]
+    flatten [[1;2;3]] |> should equal [1;2;3]
+
+// 3.16. increment
+[<Test>]
+let ``incrementing an empty list returns an empty list`` () =
+    increment [] |> should equal []
+
+[<Test>]
+let ``incrementing an list of integers returns an incremented list`` () =
+    let src = Enumerable.Range(0, 17) |> Seq.toList
+    let expected = Enumerable.Range(1, 17) |> Seq.toList
+    increment src |> should equal expected
+
+// 3.17 Skipping Double.ToString because boring
+
+// 3.18. map
+[<Test>]
+let ``mapping +1 onto a list of integers is the same as incrementing it`` () =
+    let src = Enumerable.Range(0, 17) |> Seq.toList
+    map src ((+) 1) |> should equal (increment src)
+
+// 3.19, 3.21. filter
+[<Test>]
+let ``filtering an empty list returns an empty list`` () =
+    filter [] (fun a -> true) |> should be Empty
+
+[<Test>]
+let ``filtering an array that always passes is the identity`` () =
+    filter [1;2;3] (fun a -> true) |> should equal [1;2;3]
+
+[<Test>]
+let ``filtering an array that always fails is empty`` () =
+    filter [1;2;3] (fun a -> false) |> should be Empty
+
+[<Test>]
+let ``filtering odds out of an array returns just evens`` () =
+    filter [1;2;3;4] (fun a -> a % 2 = 0) |> should equal [2;4]
+
+// 3.20. flatmap
+[<Test>]
+let ``flatmap of empty returns empty`` () =
+    flatmap [] (fun a -> [a]) |> should be Empty
+
+[<Test>]
+let ``flatmap of cons is identity`` () =
+    flatmap [1;2;3] (fun a -> [a]) |> should equal [1;2;3]
+
+// 3.22. addlists
+[<Test>]
+let ``addlists of empties returns empty`` () =
+    addlists [] [] |> should be Empty
+
+[<Test>]
+let ``addlists with one empty should be empty`` () =
+    addlists [] [1;2;3] |> should be Empty
+
+[<Test>]
+let ``addlists of two staggered lists should sum the corresponding elements`` () =
+    addlists [1;2;3] [4;5] |> should equal [5;7]
+
+// 3.23. zipwith
+[<Test>]
+let ``zipwith (+) is addlists`` () =
+    zipwith (+) [] [1;2;3] |> should be Empty
+    zipwith (+) [1;2;3] [4;5] |> should equal (addlists [1;2;3] [4;5])

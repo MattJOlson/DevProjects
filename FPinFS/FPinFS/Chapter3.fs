@@ -41,6 +41,38 @@ let foldr' els i f = foldl (reverse els) i (fun a b -> f b a)
 //let append xs ys = foldr xs ys (fun a b -> a :: b)
 let append xs ys = foldl (reverse xs) ys (fun a b -> b :: a)
 
-let rec flatmap lists = match lists with
+let rec flatten lists = match lists with
     | [] -> []
-    | list :: lists -> append list (flatmap lists)
+    | car :: cdr -> append car (flatten cdr)
+
+let rec increment xs = match xs with
+    | [] -> []
+    | car :: cdr -> car+1 :: increment cdr
+
+let rec map xs f = match xs with
+    | [] -> []
+    | car :: cdr -> (f car) :: map cdr f
+
+// initial 3.19 implementation:
+//let rec filter xs p = match xs with
+//    | [] -> []
+//    | car :: cdr -> 
+//        if p car 
+//        then car :: filter cdr p
+//        else filter cdr p
+
+let rec flatmap xs f = match xs with
+    | [] -> []
+    | car :: cdr -> append (f car) (flatmap cdr f)
+
+let filter xs p = flatmap xs (fun a -> if (p a) then [a] else [])
+
+let rec addlists xs ys = match (xs, ys) with
+    | ([],_) -> []
+    | (_,[]) -> []
+    | (x::xs, y::ys) -> (x + y) :: addlists xs ys
+
+let rec zipwith f xs ys = match (xs, ys) with
+    | ([],_) -> []
+    | (_,[]) -> []
+    | (x::xs, y::ys) -> (f x y) :: zipwith f xs ys
