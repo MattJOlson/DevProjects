@@ -77,8 +77,11 @@ let rec zipwith f xs ys = match (xs, ys) with
     | (_,[]) -> []
     | (x::xs, y::ys) -> (f x y) :: zipwith f xs ys
 
-let rec subseq super sub = match (super, sub) with
-    | (_, []) -> true
-    | ([], _) -> false
-    | (x::xs, y::ys) when x = y -> subseq xs ys
-    | (x::xs, y::ys) -> subseq xs sub
+let subseq super sub = 
+    let rec subseqCounter super currSub target = 
+        match (super, currSub) with
+        | (_, []) -> true
+        | ([], _) -> false
+        | (x::xs, y::ys) when x = y -> subseqCounter xs ys target
+        | (x::xs, y::ys) -> subseqCounter xs target target
+    subseqCounter super sub sub

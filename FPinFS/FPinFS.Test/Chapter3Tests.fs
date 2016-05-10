@@ -228,3 +228,7 @@ let ``subseq isn't fooled by partial matches`` () =
 [<Test>]
 let ``subseq finds full matches after partial`` () =
     subseq [1;2;3;1;2;3;4] [2;3;4] |> should be True
+
+[<Test>]
+let ``subseq doesn't allow gaps in matched sequence`` () =
+    subseq [1;2;3;1;2;4] [2;3;4] |> should be False
