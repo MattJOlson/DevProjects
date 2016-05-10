@@ -85,3 +85,11 @@ let subseq super sub =
         | (x::xs, y::ys) when x = y -> subseq' xs ys target
         | (x::xs, y::ys) -> subseq' xs target target
     subseq' super sub sub
+
+type 'a Tree =
+    | Leaf of 'a
+    | Branch of 'a Tree * 'a Tree
+
+let rec size tree = match tree with
+    | Leaf _ -> 1
+    | Branch (a,b) -> 1 + (size a) + (size b)

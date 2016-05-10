@@ -232,3 +232,12 @@ let ``subseq finds full matches after partial`` () =
 [<Test>]
 let ``subseq doesn't allow gaps in matched sequence`` () =
     subseq [1;2;3;1;2;4] [2;3;4] |> should be False
+
+// 3.25. tree size
+[<Test>]
+let ``size of a leaf is always 1`` () =
+    size (Leaf 3) |> should equal 1
+
+[<Test>]
+let ``size of a tree is the number of leaves plus the number of branches`` () =
+    size (Branch (Leaf 3, (Branch (Leaf 1, Leaf 2)))) |> should equal 5
