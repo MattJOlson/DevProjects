@@ -201,3 +201,30 @@ let ``addlists of two staggered lists should sum the corresponding elements`` ()
 let ``zipwith (+) is addlists`` () =
     zipwith (+) [] [1;2;3] |> should be Empty
     zipwith (+) [1;2;3] [4;5] |> should equal (addlists [1;2;3] [4;5])
+
+// 3.24. subseq
+[<Test>]
+let ``any list always contains an empty subsequence`` () =
+    subseq [] [] |> should be True
+    subseq [1;2;3] [] |> should be True
+
+[<Test>]
+let ``an empty list never contains a nonempty subsequence`` () =
+    subseq [] [1;2] |> should be False
+
+[<Test>]
+let ``subseq can find a single element`` () =
+    subseq [1;2] [1] |> should be True
+    subseq [1;2] [2] |> should be True
+
+[<Test>]
+let ``subseq can find a particular subsequence`` () =
+    subseq [1;2;3;4] [2;3] |> should be True
+
+[<Test>]
+let ``subseq isn't fooled by partial matches`` () =
+    subseq [1;2;3;4;5] [2;3;6] |> should be False
+
+[<Test>]
+let ``subseq finds full matches after partial`` () =
+    subseq [1;2;3;1;2;3;4] [2;3;4] |> should be True
