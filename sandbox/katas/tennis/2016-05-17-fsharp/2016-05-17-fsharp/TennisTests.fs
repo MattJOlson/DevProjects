@@ -2,7 +2,6 @@
 
 open Tennis_2016_05_17_fsharp
 open NUnit.Framework
-open System.Linq
 open FsUnit
 
 [<Test>]
@@ -28,3 +27,23 @@ let ``When the serving player scores from Forty-Love the score is ServingPlayerW
 let ``When the game is over "scoring more points" doesn't count`` () =
     let score = (GameOver ServingPlayerWon)
     score |> (PointFor Receiving) |> should equal (GameOver ServingPlayerWon)
+
+[<Test>]
+let ``When the receiving player scores from Forty-Thirty the score is Deuce`` () =
+    let score = NormalScoreOf Forty Thirty |> (PointFor Receiving)
+    score |> should equal (DeuceScore Deuce)
+
+[<Test>]
+let ``When the serving player scores from Deuce the score is AdvantageServing`` () =
+    let score = (DeuceScore Deuce) |> (PointFor Serving)
+    score |> should equal (DeuceScore AdvantageServing)
+
+[<Test>]
+let ``When the receiving player scores from AdvantageServing the score is Deuce`` () =
+    let score = (DeuceScore AdvantageServing) |> (PointFor Receiving)
+    score |> should equal (DeuceScore Deuce)
+
+[<Test>]
+let ``When the serving player scores from AdvantageServing the score is ServingPlayerWon`` () =
+    let score = (DeuceScore AdvantageServing) |> (PointFor Serving)
+    score |> should equal (GameOver ServingPlayerWon)

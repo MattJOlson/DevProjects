@@ -4,13 +4,11 @@ type Player =
 | Serving
 | Receiving
 
-type Score = // Would be nice to make this ordinal, maybe?
+type Score =
 | Love
 | Fifteen
 | Thirty
 | Forty
-| Advantage
-| Game
 
 type NormalScoreData = Map<Player, Score>
 
@@ -31,19 +29,43 @@ type TennisScore =
 let NormalScoreOf (s: Score) (r: Score) =
     NormalScore ([Serving, s; Receiving, r] |> Map.ofList)
 
-let ScoreSucc s = match s with
+let ScoreSucc s =
+    match s with
     | Love -> Fifteen
     | Fifteen -> Thirty
     | Thirty -> Forty
-    | Forty -> Game
+    | Forty -> failwith "Succ Forty is not a normal score!"
 
 let StartGame = NormalScore ([Serving, Love; Receiving, Love] |> Map.ofList)
 
+let PossiblyDeuce n =
+    if n = (NormalScoreOf Forty Forty) then DeuceScore Deuce
+    else n
+
+let DeclareWinner p =
+    match p with
+    | Serving -> (GameOver ServingPlayerWon)
+    | Receiving -> (GameOver ReceivingPlayerWon)
+
+let HasAdvantage p s =
+    match p with
+    | Serving -> s = AdvantageServing
+    | Receiving -> s = AdvantageReceiving
+
+let GrantAdvantage p =
+    match p with
+    | Serving -> (DeuceScore AdvantageServing)
+    | Receiving -> (DeuceScore AdvantageReceiving)
+
+let ResolveDeuce p s =
+    match s with
+    | Deuce -> GrantAdvantage p
+    | _ when HasAdvantage p s -> DeclareWinner p
+    | _ -> (DeuceScore Deuce)
+
 let PointFor (p : Player) (s: TennisScore) : TennisScore =
     match s with
-    | NormalScore n when (n.[p] = Forty) ->
-        match p with
-        | Serving -> (GameOver ServingPlayerWon)
-        | Receiving -> (GameOver ReceivingPlayerWon)
-    | NormalScore n -> NormalScore (n.Add(p, ScoreSucc n.[p]))
+    | DeuceScore d -> ResolveDeuce p d
+    | NormalScore n when (n.[p] = Forty) -> DeclareWinner p
+    | NormalScore n -> NormalScore (n.Add(p, ScoreSucc n.[p])) |> PossiblyDeuce
     | GameOver w -> s
