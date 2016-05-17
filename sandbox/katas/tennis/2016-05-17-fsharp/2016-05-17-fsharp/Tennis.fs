@@ -14,9 +14,14 @@ type Score = // Would be nice to make this ordinal, maybe?
 
 type NormalScoreData = Map<Player, Score>
 
-type DeuceScoreData = unit
+type DeuceScoreData = 
+| Deuce
+| AdvantageServing
+| AdvantageReceiving
 
-type GameOverData = unit
+type GameOverData = 
+| ServingPlayerWon
+| ReceivingPlayerWon
 
 type TennisScore = 
 | NormalScore of NormalScoreData
@@ -26,8 +31,19 @@ type TennisScore =
 let NormalScoreOf (s: Score) (r: Score) =
     NormalScore ([Serving, s; Receiving, r] |> Map.ofList)
 
+let ScoreSucc s = match s with
+    | Love -> Fifteen
+    | Fifteen -> Thirty
+    | Thirty -> Forty
+    | Forty -> Game
+
 let StartGame = NormalScore ([Serving, Love; Receiving, Love] |> Map.ofList)
 
 let PointFor (p : Player) (s: TennisScore) : TennisScore =
     match s with
-    | NormalScore n -> NormalScore (n.Add(p, Fifteen))
+    | NormalScore n when (n.[p] = Forty) ->
+        match p with
+        | Serving -> (GameOver ServingPlayerWon)
+        | Receiving -> (GameOver ReceivingPlayerWon)
+    | NormalScore n -> NormalScore (n.Add(p, ScoreSucc n.[p]))
+    | GameOver w -> s
