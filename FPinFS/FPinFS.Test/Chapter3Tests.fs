@@ -241,3 +241,36 @@ let ``size of a leaf is always 1`` () =
 [<Test>]
 let ``size of a tree is the number of leaves plus the number of branches`` () =
     size (Branch (Leaf 3, (Branch (Leaf 1, Leaf 2)))) |> should equal 5
+
+// 3.26. tree max
+[<Test>]
+let ``max of a leaf is always that leaf's element`` () =
+    maxEl (Leaf 17) |> should equal 17
+
+[<Test>]
+let ``max of a branch is the max of its subtrees`` () =
+    maxEl (Branch (Leaf 17, Leaf 19)) |> should equal 19
+
+// 3.27. tree depth
+[<Test>]
+let ``depth of a leaf is always zero, because I've decided that depth counts edges`` () =
+    depth (Leaf 69) |> should equal 0
+
+[<Test>]
+let ``depth of a branch is one plus the max depth of its subtrees`` () =
+    let shortBranch = Branch (Leaf 2, Leaf 3)
+    let longBranch = Branch ((Branch (Leaf 5, Leaf 7)), (Leaf 11))
+    depth (Branch (shortBranch, longBranch)) |> should equal ((depth longBranch) + 1)
+
+// 3.28. tree map
+[<Test>]
+let ``mapTree f (Leaf a) is (Leaf f a)`` () =
+    mapTree (fun a -> a + 1) (Leaf 17) |> should equal (Leaf 18)
+
+[<Test>]
+let ``mapTree of a complex tree maps its elements`` () =
+    let shortBranch = Branch (Leaf 2, Leaf 3)
+    let longBranch = Branch ((Branch (Leaf 5, Leaf 7)), (Leaf 11))
+    let f a = a + 1
+    mapTree f (Branch (shortBranch, longBranch))
+    |> should equal (Branch ((mapTree f shortBranch), (mapTree f longBranch)))

@@ -93,3 +93,15 @@ type 'a Tree =
 let rec size tree = match tree with
     | Leaf _ -> 1
     | Branch (a,b) -> 1 + (size a) + (size b)
+
+let rec maxEl tree = match tree with
+    | Leaf n -> n
+    | Branch (a,b) -> max (maxEl a) (maxEl b)
+
+let rec depth tree = match tree with
+    | Leaf _ -> 0
+    | Branch (a,b) -> 1 + max (depth a) (depth b)
+
+let rec mapTree f tree = match tree with
+    | Leaf a -> Leaf (f a)
+    | Branch (a,b) -> Branch ((mapTree f a), (mapTree f b))
