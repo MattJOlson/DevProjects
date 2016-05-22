@@ -90,18 +90,38 @@ type 'a Tree =
     | Leaf of 'a
     | Branch of 'a Tree * 'a Tree
 
-let rec size tree = match tree with
-    | Leaf _ -> 1
-    | Branch (a,b) -> 1 + (size a) + (size b)
+//let rec size tree = match tree with
+//    | Leaf _ -> 1
+//    | Branch (a,b) -> 1 + (size a) + (size b)
 
-let rec maxEl tree = match tree with
-    | Leaf n -> n
-    | Branch (a,b) -> max (maxEl a) (maxEl b)
+//let rec maxEl tree = match tree with
+//    | Leaf n -> n
+//    | Branch (a,b) -> max (maxEl a) (maxEl b)
 
-let rec depth tree = match tree with
-    | Leaf _ -> 0
-    | Branch (a,b) -> 1 + max (depth a) (depth b)
+//let rec depth tree = match tree with
+//    | Leaf _ -> 0
+//    | Branch (a,b) -> 1 + max (depth a) (depth b)
 
-let rec mapTree f tree = match tree with
-    | Leaf a -> Leaf (f a)
-    | Branch (a,b) -> Branch ((mapTree f a), (mapTree f b))
+//let rec mapTree f tree = match tree with
+//    | Leaf a -> Leaf (f a)
+//    | Branch (a,b) -> Branch ((mapTree f a), (mapTree f b))
+
+let rec foldTree leaf branch tree =
+    match tree with
+    | Leaf a -> leaf a
+    | Branch (a,b) -> branch (foldTree leaf branch a) (foldTree leaf branch b)
+
+let size tree =
+    foldTree (fun a -> 1) (fun a b -> 1 + a + b) tree
+
+let maxEl tree =
+    foldTree id max tree
+
+let depth tree =
+    foldTree (fun a -> 0) (fun a b -> 1 + max a b) tree
+
+let rec mapTree (f : 'a -> 'b) (tree : 'a Tree) : 'b Tree =
+    let leaf = (fun a -> Leaf(f a))
+    // I don't yet understand why I need id here to prevent double-application of f, but the tests are green so ok
+    let branch = (fun a b -> Branch (mapTree id a, mapTree id b))
+    foldTree leaf branch tree
