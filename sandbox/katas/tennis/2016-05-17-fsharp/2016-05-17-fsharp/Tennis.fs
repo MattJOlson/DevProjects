@@ -36,7 +36,7 @@ let ScoreSucc s =
     | Thirty -> Forty
     | Forty -> failwith "Succ Forty is not a normal score!"
 
-let StartGame = NormalScore ([Serving, Love; Receiving, Love] |> Map.ofList)
+let StartGame = NormalScoreOf Love Love
 
 let PossiblyDeuce n =
     if n = (NormalScoreOf Forty Forty) then DeuceScore Deuce
@@ -44,8 +44,8 @@ let PossiblyDeuce n =
 
 let DeclareWinner p =
     match p with
-    | Serving -> (GameOver ServingPlayerWon)
-    | Receiving -> (GameOver ReceivingPlayerWon)
+    | Serving -> GameOver ServingPlayerWon
+    | Receiving -> GameOver ReceivingPlayerWon
 
 let HasAdvantage p s =
     match p with
@@ -54,18 +54,18 @@ let HasAdvantage p s =
 
 let GrantAdvantage p =
     match p with
-    | Serving -> (DeuceScore AdvantageServing)
-    | Receiving -> (DeuceScore AdvantageReceiving)
+    | Serving -> DeuceScore AdvantageServing
+    | Receiving -> DeuceScore AdvantageReceiving
 
 let ResolveDeuce p s =
     match s with
     | Deuce -> GrantAdvantage p
     | _ when HasAdvantage p s -> DeclareWinner p
-    | _ -> (DeuceScore Deuce)
+    | _ -> DeuceScore Deuce
 
 let PointFor (p : Player) (s: TennisScore) : TennisScore =
     match s with
     | DeuceScore d -> ResolveDeuce p d
     | NormalScore n when (n.[p] = Forty) -> DeclareWinner p
     | NormalScore n -> NormalScore (n.Add(p, ScoreSucc n.[p])) |> PossiblyDeuce
-    | GameOver w -> s
+    | GameOver _ -> s
