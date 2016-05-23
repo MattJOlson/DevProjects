@@ -268,6 +268,12 @@ let ``mapTree f (Leaf a) is (Leaf f a)`` () =
     mapTree (fun a -> a + 1) (Leaf 17) |> should equal (Leaf 18)
 
 [<Test>]
+let ``mapTree of a simple branch works``() =
+    let input = Branch (Leaf 2, Leaf 3)
+    let expected = Branch (Leaf 3, Leaf 4)
+    mapTree (fun a -> a + 1) input |> should equal expected
+
+[<Test>]
 let ``mapTree of a complex tree maps its elements`` () =
     let shortBranch = Branch (Leaf 2, Leaf 3)
     let longBranch = Branch ((Branch (Leaf 5, Leaf 7)), (Leaf 11))

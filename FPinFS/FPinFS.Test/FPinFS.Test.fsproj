@@ -53,6 +53,7 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Chapter2Tests.fs" />
     <Compile Include="Chapter3Tests.fs" />
+    <Compile Include="Chapter4Tests.fs" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
