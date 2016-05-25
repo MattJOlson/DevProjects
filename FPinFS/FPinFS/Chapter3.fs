@@ -120,9 +120,5 @@ let maxEl tree =
 let depth tree =
     foldTree (fun a -> 0) (fun a b -> 1 + max a b) tree
 
-let rec mapTree (f : 'a -> 'b) (tree : 'a Tree) : 'b Tree =
-//    let leaf = (fun a -> Leaf(f a))
-//    // I don't yet understand why I need id here to prevent double-application of f, but the tests are green so ok
-//    let branch = (fun a b -> Branch (mapTree id a, mapTree id b))
-//    foldTree leaf branch tree
-    foldTree (f >> Leaf) (fun a b -> Branch (mapTree id a, mapTree id b)) tree
+let rec mapTree f tree =
+    foldTree (f >> Leaf) (fun a b -> Branch (a, b)) tree
