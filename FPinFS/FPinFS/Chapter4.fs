@@ -21,3 +21,8 @@ type Maybe<'a> =
 
     member this.FlatMap f =
         (this.Map f).GetOrElse(Nothing) // pitfalls of dot-notation?
+
+    member this.OrElse (b : 'b Maybe) =
+        match this with
+        | Nothing -> b
+        | Just a -> this
