@@ -19,3 +19,7 @@ let ``Wrapping two words that, combined, are shorter than the line length return
 [<Test>]
 let ``Wrapping two words that exceed the line length returns two lines``() =
     wrap "foo bar" 4 |> should equal "foo\nbar"
+
+[<Test>]
+let ``Wrapping two words, with the line end falling within the second, replaces the separating space with a newline``() =
+    wrap "foo bar" 5 |> should equal "foo\nbar"
